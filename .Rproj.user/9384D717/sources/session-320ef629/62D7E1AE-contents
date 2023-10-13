@@ -1,0 +1,308 @@
+---
+title: "Métodos computacionales para las ciencias sociales"
+subtitle: "Procesamiento de texto II"
+format: 
+    revealjs:
+      auto-stretch: false
+      scrollable: true
+      link-external-newwindow: true
+css: style.css
+editor: source
+execute:
+  echo: true
+---
+
+## Contenidos de la clase
+
+-   Uso básico de quanteda
+-   quanteda + regex
+-   Vectorización de textos
+
+# ¿Por qué es relevante conocer herramientas para manejar *strings*? {.center background-color="aquamarine"}
+
+## Introducción a quanteda
+
+![](imagenes/logo_quanteda.png){fig-align="center" width="400px"}
+
+Paquete para el procesamiento y análisis de texto
+
+. . .
+
+Mantenido por [Kenneth Benoit](https://kenbenoit.net/) y [Kohei Watanabe](https://blog.koheiw.net/){target="_blank"}
+
+. . .
+
+Ambos tienen una formación en ciencias sociales (ciencia política y literatura)
+
+. . .
+
+Documentación oficial [aquí](http://quanteda.io/index.html)
+
+Tutoriales por [acá](https://tutorials.quanteda.io/)
+
+## Primeros pasos
+
+Es conveniente instalar todos los módulos
+
+```{r, eval=FALSE}
+install.packages("quanteda")
+install.packages("quanteda.textstats")
+install.packages("quanteda.textplots")
+
+
+
+```
+
+<br/>
+
+```{r}
+library(quanteda)
+library(quanteda.textstats)
+library(quanteda.textplots)
+```
+
+## Los datos
+
+Conjunto de noticias obtenidas de los diarios La Razón y Público de España
+
+Dataset obtenido de kaggle
+
+. . .
+
+```{r}
+library(tidyverse)
+data <- read_csv("data/data_larazon_publico_v2.csv")
+```
+
+![](imagenes/ejemplo_dataset.png){fig-align="center" width="1000px"}
+
+## Flujo básico
+
+::: panel-tabset
+
+## crear corpus
+
+Creamos un corpus a partir de una muestra del 20%
+
+¡¡La columna se debe llamar *text*!!
+
+```{r}
+set.seed(123)
+corp <- data %>% 
+  select(text = cuerpo) %>% 
+  sample_frac(0.2) %>% 
+  corpus()
+```
+
+## corpus
+
+```{r}
+corp
+```
+
+## Características
+
+```{r}
+class(corp)
+```
+
+. . .
+
+Es una especie de lista
+
+```{r}
+length(corp)
+```
+:::
+
+## Crear tokens
+
+::: panel-tabset
+
+## tokenizar
+```{r}
+toks <-  corp %>% 
+  tokens()
+```
+
+::: fragment
+
+Es una especie de lista de listas
+
+```{r}
+toks
+```
+:::
+
+
+## explorar
+
+```{r}
+toks[[1]]
+toks[[1]][3]
+```
+
+
+## Todo junto
+
+Usualmente, pasamos de corpus a tokens en una cadena de *pipes*
+
+```{r, eval=FALSE}
+toks <- data %>% 
+  select(text = cuerpo) %>% 
+  sample_frac(0.2) %>% 
+  corpus() %>% 
+  tokens()
+```
+
+
+
+:::
+
+
+## Exploremos el dataset
+
+Con `kwic` (*keyword in context*) podemos explorar tópicos 
+
+```{r}
+comentarios_eta <- toks %>% 
+  kwic( pattern = "eta",  window = 7)  
+
+```
+
+```{r, echo=FALSE}
+
+comentarios_eta %>% 
+  DT::datatable(rownames = F, 
+                options = list(
+                  pageLength = 3,
+                  dom = "rtip",
+                  headerCallback = DT::JS(
+                    "function(thead) {",
+                    "  $(thead).css('font-size', '0.5em');",
+                    "}"
+                  ))
+                )%>% 
+  DT::formatStyle(columns = 1:ncol(comentarios_eta), fontSize = '40%', backgroundSize = '2%')
+
+```
+
+## kwic y expresiones regulares
+
+La función `kwic` soporta expresiones regulares
+
+```{r}
+comentarios_migracion <- toks %>% 
+  kwic( pattern = "migrante|extranjer(o|a)",  window = 7, valuetype = "regex" )  
+```
+
+```{r, echo=FALSE}
+comentarios_migracion %>% 
+  DT::datatable(rownames = F, 
+                options = list(
+                  pageLength = 3,
+                  dom = "rtip",
+                  headerCallback = DT::JS(
+                    "function(thead) {",
+                    "  $(thead).css('font-size', '0.5em');",
+                    "}"
+                  ))
+                )%>% 
+  DT::formatStyle(columns = 1:ncol(comentarios_migracion), fontSize = '40%', backgroundSize = '2%')
+```
+
+## Ejercicio: buscando tópicos
+
+A partir del dataset de noticias, realiza las siguientes acciones:
+
+- Selecciona una muestra del 30%
+- Convierte el dataset en corpus y luego "tokeniza"
+- Explora el resultado de la "tokenización"
+- Utilizando kwic, intenta capturar textos que contengan alusiones a violencia de género
+
+
+# De texto a vectores {.center background-color="aquamarine"}
+
+## Matriz DFM
+
+En muchas ocasiones es útil representar el texto como un vector de números
+
+. . .
+
+```{r}
+ejemplo <- data.frame(text = c("Mi gato es un tirano en casa. Él es amo y señor.",
+                               "Soy esclavo de mi gato."
+                               )) 
+dfm_ejemplo <- ejemplo %>% 
+  corpus() %>% 
+  tokens() %>% 
+  dfm()  
+
+dfm_ejemplo 
+```
+
+```{r}
+dim(dfm_ejemplo)
+```
+
+
+
+## Seleccionando tokens
+
+Removeremos lo siguiente:
+
+- signos de puntuación
+- stopwords
+
+
+```{r}
+dfm_ejemplo <- ejemplo %>% 
+  corpus() %>% 
+  tokens( remove_punct = TRUE) %>% # remover puntuación
+  tokens_select(pattern = quanteda::stopwords("es"), selection = "remove") %>% # remover stopwords
+  dfm()  
+
+dfm_ejemplo
+
+```
+
+
+## Ejercicio: El Hombre Imaginario
+
+Construiremos a mano una matriz DFM. Para ello, considera los siguientes textos
+
+
+```{r, echo=FALSE}
+library(kableExtra)
+textos <-  c("Y en las noches de luna imaginaria",
+"sueña con la mujer imaginaria",
+"que le brindó su amor imaginario",
+"vuelve a sentir ese mismo dolor",
+"ese mismo placer imaginario",
+"y vuelve a palpitar",
+"el corazón del hombre imaginario")
+
+tibble(`El hombre imaginario` = textos) %>% 
+  kbl()
+```
+
+Abre un archivo excel y sigue los siguientes pasos:
+
+1. Haz un listado de todas las palabras únicas (OPCIONAL: elimina *stopwords*)
+2. Construye una tabla en la que cada columna tenga el nombre de una palabra única
+3. Cuenta la cantidad de veces que aparece cada palabra en un texto
+
+
+
+## Volvamos a las noticias
+
+Construiremos una matriz DFM
+
+```{r}
+
+```
+
+
+
+
+# Métodos computacionales para las ciencias sociales {.center background-color="aquamarine"}
