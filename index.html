@@ -419,9 +419,53 @@
 </ul>
 </section>
 <section>
-<section id="por-qué-es-relevante-conocer-herramientas-para-manejar-strings" class="title-slide slide level1 center" data-background-color="aquamarine">
-<h1>¿Por qué es relevante conocer herramientas para manejar <em>strings</em>?</h1>
+<section id="por-qué-es-relevante-conocer-herramientas-para-trabajar-con-texto" class="title-slide slide level1 center" data-background-color="aquamarine">
+<h1>¿Por qué es relevante conocer herramientas para trabajar con texto?</h1>
 
+</section>
+<section id="aplicaciones" class="slide level2">
+<h2>Aplicaciones</h2>
+<p><img src="imagenes/ejemplos_nlp.png" width="800"></p>
+</section>
+<section id="relevancia" class="slide level2">
+<h2>Relevancia</h2>
+<p>La cantidad de datos de texto crece día a día de manera veloz</p>
+<div class="fragment">
+<p>Es imposible analizarlo todo de manera manual</p>
+</div>
+<div class="fragment">
+<p>Necesitamos herramientas automáticas</p>
+</div>
+<div class="fragment">
+<div class="columns">
+<div class="column" style="width:50%;">
+<p><img src="imagenes/logo_twitter.jpg" width="300"></p>
+</div><div class="column" style="width:50%;">
+<p><img src="imagenes/logo_wiki.png" width="200"></p>
+</div>
+</div>
+</div>
+</section>
+<section id="desafíos-al-trabajar-con-texto" class="slide level2">
+<h2>Desafíos al trabajar con texto</h2>
+<p>El lenguaje:</p>
+<ul>
+<li>Es ambiguo</li>
+<li>Requiere un contexto</li>
+<li>Es flexible</li>
+</ul>
+<div class="fragment">
+<div class="cell">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1"></a>animal <span class="ot">&lt;-</span> <span class="st">"perro"</span></span>
+<span id="cb1-2"><a href="#cb1-2"></a><span class="cf">if</span> (animal <span class="sc">==</span> <span class="st">"perro"</span>) {</span>
+<span id="cb1-3"><a href="#cb1-3"></a>  <span class="fu">print</span>(<span class="st">"guau"</span>)</span>
+<span id="cb1-4"><a href="#cb1-4"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] "guau"</code></pre>
+</div>
+</div>
+<p><strong>Si el animal es un perro, imprime un ladrido</strong></p>
+</div>
 </section>
 <section id="introducción-a-quanteda" class="slide level2">
 <h2>Introducción a quanteda</h2>
@@ -446,15 +490,15 @@
 <h2>Primeros pasos</h2>
 <p>Es conveniente instalar todos los módulos</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1"></a><span class="fu">install.packages</span>(<span class="st">"quanteda"</span>)</span>
-<span id="cb1-2"><a href="#cb1-2"></a><span class="fu">install.packages</span>(<span class="st">"quanteda.textstats"</span>)</span>
-<span id="cb1-3"><a href="#cb1-3"></a><span class="fu">install.packages</span>(<span class="st">"quanteda.textplots"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1"></a><span class="fu">install.packages</span>(<span class="st">"quanteda"</span>)</span>
+<span id="cb3-2"><a href="#cb3-2"></a><span class="fu">install.packages</span>(<span class="st">"quanteda.textstats"</span>)</span>
+<span id="cb3-3"><a href="#cb3-3"></a><span class="fu">install.packages</span>(<span class="st">"quanteda.textplots"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p><br></p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1"></a><span class="fu">library</span>(quanteda)</span>
-<span id="cb2-2"><a href="#cb2-2"></a><span class="fu">library</span>(quanteda.textstats)</span>
-<span id="cb2-3"><a href="#cb2-3"></a><span class="fu">library</span>(quanteda.textplots)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1"></a><span class="fu">library</span>(quanteda)</span>
+<span id="cb4-2"><a href="#cb4-2"></a><span class="fu">library</span>(quanteda.textstats)</span>
+<span id="cb4-3"><a href="#cb4-3"></a><span class="fu">library</span>(quanteda.textplots)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
 <section id="los-datos" class="slide level2">
@@ -463,8 +507,8 @@
 <p>Dataset obtenido de kaggle</p>
 <div class="fragment">
 <div class="cell">
-<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1"></a><span class="fu">library</span>(tidyverse)</span>
-<span id="cb3-2"><a href="#cb3-2"></a>data <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(<span class="st">"data/data_larazon_publico_v2.csv"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1"></a><span class="fu">library</span>(tidyverse)</span>
+<span id="cb5-2"><a href="#cb5-2"></a>data <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(<span class="st">"data/data_larazon_publico_v2.csv"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="quarto-figure quarto-figure-center">
 <figure>
@@ -482,16 +526,16 @@
 <p>Creamos un corpus a partir de una muestra del 20%</p>
 <p>¡¡La columna se debe llamar <em>text</em>!!</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1"></a><span class="fu">set.seed</span>(<span class="dv">123</span>)</span>
-<span id="cb4-2"><a href="#cb4-2"></a>corp <span class="ot">&lt;-</span> data <span class="sc">%&gt;%</span> </span>
-<span id="cb4-3"><a href="#cb4-3"></a>  <span class="fu">select</span>(<span class="at">text =</span> cuerpo) <span class="sc">%&gt;%</span> </span>
-<span id="cb4-4"><a href="#cb4-4"></a>  <span class="fu">sample_frac</span>(<span class="fl">0.2</span>) <span class="sc">%&gt;%</span> </span>
-<span id="cb4-5"><a href="#cb4-5"></a>  <span class="fu">corpus</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1"></a><span class="fu">set.seed</span>(<span class="dv">123</span>)</span>
+<span id="cb6-2"><a href="#cb6-2"></a>corp <span class="ot">&lt;-</span> data <span class="sc">%&gt;%</span> </span>
+<span id="cb6-3"><a href="#cb6-3"></a>  <span class="fu">select</span>(<span class="at">text =</span> cuerpo) <span class="sc">%&gt;%</span> </span>
+<span id="cb6-4"><a href="#cb6-4"></a>  <span class="fu">sample_frac</span>(<span class="fl">0.2</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb6-5"><a href="#cb6-5"></a>  <span class="fu">corpus</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </div>
 <div id="tabset-1-2">
 <div class="cell">
-<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1"></a>corp</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1"></a>corp</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Corpus consisting of 11,685 documents.
 text1 :
@@ -518,7 +562,7 @@ text6 :
 </div>
 <div id="tabset-1-3">
 <div class="cell">
-<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1"></a><span class="fu">class</span>(corp)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1"></a><span class="fu">class</span>(corp)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] "corpus"    "character"</code></pre>
 </div>
@@ -526,7 +570,7 @@ text6 :
 <p>. . .</p>
 <p>Es una especie de lista</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1"></a><span class="fu">length</span>(corp)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1"></a><span class="fu">length</span>(corp)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 11685</code></pre>
 </div>
@@ -542,13 +586,13 @@ text6 :
 <div class="tab-content">
 <div id="tabset-2-1">
 <div class="cell">
-<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1"></a>toks <span class="ot">&lt;-</span>  corp <span class="sc">%&gt;%</span> </span>
-<span id="cb11-2"><a href="#cb11-2"></a>  <span class="fu">tokens</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1"></a>toks <span class="ot">&lt;-</span>  corp <span class="sc">%&gt;%</span> </span>
+<span id="cb13-2"><a href="#cb13-2"></a>  <span class="fu">tokens</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="fragment">
 <p>Es una especie de lista de listas</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1"></a>toks</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1"></a>toks</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Tokens consisting of 11,685 documents.
 text1 :
@@ -593,7 +637,7 @@ text6 :
 </div>
 <div id="tabset-2-2">
 <div class="cell">
-<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1"></a>toks[[<span class="dv">1</span>]]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1"></a>toks[[<span class="dv">1</span>]]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>  [1] "la"               "fiscalía"         "anticorrupción"  
   [4] "ha"               "eximido"          "a"               
@@ -909,7 +953,7 @@ text6 :
 [934] "malversación"     "de"               "caudales"        
 [937] "públicos"         "agravado"         "."               </code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1"></a>toks[[<span class="dv">1</span>]][<span class="dv">3</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1"></a>toks[[<span class="dv">1</span>]][<span class="dv">3</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] "anticorrupción"</code></pre>
 </div>
@@ -918,11 +962,11 @@ text6 :
 <div id="tabset-2-3">
 <p>Usualmente, pasamos de corpus a tokens en una cadena de <em>pipes</em></p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1"></a>toks <span class="ot">&lt;-</span> data <span class="sc">%&gt;%</span> </span>
-<span id="cb18-2"><a href="#cb18-2"></a>  <span class="fu">select</span>(<span class="at">text =</span> cuerpo) <span class="sc">%&gt;%</span> </span>
-<span id="cb18-3"><a href="#cb18-3"></a>  <span class="fu">sample_frac</span>(<span class="fl">0.2</span>) <span class="sc">%&gt;%</span> </span>
-<span id="cb18-4"><a href="#cb18-4"></a>  <span class="fu">corpus</span>() <span class="sc">%&gt;%</span> </span>
-<span id="cb18-5"><a href="#cb18-5"></a>  <span class="fu">tokens</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1"></a>toks <span class="ot">&lt;-</span> data <span class="sc">%&gt;%</span> </span>
+<span id="cb20-2"><a href="#cb20-2"></a>  <span class="fu">select</span>(<span class="at">text =</span> cuerpo) <span class="sc">%&gt;%</span> </span>
+<span id="cb20-3"><a href="#cb20-3"></a>  <span class="fu">sample_frac</span>(<span class="fl">0.2</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb20-4"><a href="#cb20-4"></a>  <span class="fu">corpus</span>() <span class="sc">%&gt;%</span> </span>
+<span id="cb20-5"><a href="#cb20-5"></a>  <span class="fu">tokens</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </div>
 </div>
@@ -932,8 +976,8 @@ text6 :
 <h2>Exploremos el dataset</h2>
 <p>Con <code>kwic</code> (<em>keyword in context</em>) podemos explorar tópicos</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1"></a>comentarios_eta <span class="ot">&lt;-</span> toks <span class="sc">%&gt;%</span> </span>
-<span id="cb19-2"><a href="#cb19-2"></a>  <span class="fu">kwic</span>( <span class="at">pattern =</span> <span class="st">"eta"</span>,  <span class="at">window =</span> <span class="dv">7</span>)  </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1"></a>comentarios_eta <span class="ot">&lt;-</span> toks <span class="sc">%&gt;%</span> </span>
+<span id="cb21-2"><a href="#cb21-2"></a>  <span class="fu">kwic</span>( <span class="at">pattern =</span> <span class="st">"eta"</span>,  <span class="at">window =</span> <span class="dv">7</span>)  </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="cell">
 <div class="cell-output-display">
@@ -947,8 +991,8 @@ text6 :
 <h2>kwic y expresiones regulares</h2>
 <p>La función <code>kwic</code> soporta expresiones regulares</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1"></a>comentarios_migracion <span class="ot">&lt;-</span> toks <span class="sc">%&gt;%</span> </span>
-<span id="cb20-2"><a href="#cb20-2"></a>  <span class="fu">kwic</span>( <span class="at">pattern =</span> <span class="st">"migrante|extranjer(o|a)"</span>,  <span class="at">window =</span> <span class="dv">7</span>, <span class="at">valuetype =</span> <span class="st">"regex"</span> )  </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1"></a>comentarios_migracion <span class="ot">&lt;-</span> toks <span class="sc">%&gt;%</span> </span>
+<span id="cb22-2"><a href="#cb22-2"></a>  <span class="fu">kwic</span>( <span class="at">pattern =</span> <span class="st">"migrante|extranjer(o|a)"</span>,  <span class="at">window =</span> <span class="dv">7</span>, <span class="at">valuetype =</span> <span class="st">"regex"</span> )  </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="cell">
 <div class="cell-output-display">
@@ -977,16 +1021,22 @@ text6 :
 <h2>Matriz DFM</h2>
 <p>En muchas ocasiones es útil representar el texto como un vector de números</p>
 <div class="fragment">
+<p>Los vectores nos permiten hacer operaciones algebraicas</p>
+</div>
+<div class="fragment">
+<p>Los computadores no entienden palabras</p>
+</div>
+<div class="fragment">
 <div class="cell">
-<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1"></a>ejemplo <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">text =</span> <span class="fu">c</span>(<span class="st">"Mi gato es un tirano en casa. Él es amo y señor."</span>,</span>
-<span id="cb21-2"><a href="#cb21-2"></a>                               <span class="st">"Soy esclavo de mi gato."</span></span>
-<span id="cb21-3"><a href="#cb21-3"></a>                               )) </span>
-<span id="cb21-4"><a href="#cb21-4"></a>dfm_ejemplo <span class="ot">&lt;-</span> ejemplo <span class="sc">%&gt;%</span> </span>
-<span id="cb21-5"><a href="#cb21-5"></a>  <span class="fu">corpus</span>() <span class="sc">%&gt;%</span> </span>
-<span id="cb21-6"><a href="#cb21-6"></a>  <span class="fu">tokens</span>() <span class="sc">%&gt;%</span> </span>
-<span id="cb21-7"><a href="#cb21-7"></a>  <span class="fu">dfm</span>()  </span>
-<span id="cb21-8"><a href="#cb21-8"></a></span>
-<span id="cb21-9"><a href="#cb21-9"></a>dfm_ejemplo </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb23"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1"></a>ejemplo <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">text =</span> <span class="fu">c</span>(<span class="st">"Mi gato es un tirano en casa. Él es amo y señor."</span>,</span>
+<span id="cb23-2"><a href="#cb23-2"></a>                               <span class="st">"Soy esclavo de mi gato."</span></span>
+<span id="cb23-3"><a href="#cb23-3"></a>                               )) </span>
+<span id="cb23-4"><a href="#cb23-4"></a>dfm_ejemplo <span class="ot">&lt;-</span> ejemplo <span class="sc">%&gt;%</span> </span>
+<span id="cb23-5"><a href="#cb23-5"></a>  <span class="fu">corpus</span>() <span class="sc">%&gt;%</span> </span>
+<span id="cb23-6"><a href="#cb23-6"></a>  <span class="fu">tokens</span>() <span class="sc">%&gt;%</span> </span>
+<span id="cb23-7"><a href="#cb23-7"></a>  <span class="fu">dfm</span>()  </span>
+<span id="cb23-8"><a href="#cb23-8"></a></span>
+<span id="cb23-9"><a href="#cb23-9"></a>dfm_ejemplo </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Document-feature matrix of: 2 documents, 15 features (40.00% sparse) and 0 docvars.
        features
@@ -997,7 +1047,7 @@ docs    mi gato es un tirano en casa . él amo
 </div>
 </div>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb23"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1"></a><span class="fu">dim</span>(dfm_ejemplo)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb25"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1"></a><span class="fu">dim</span>(dfm_ejemplo)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1]  2 15</code></pre>
 </div>
@@ -1012,13 +1062,13 @@ docs    mi gato es un tirano en casa . él amo
 <li>stopwords</li>
 </ul>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb25"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1"></a>dfm_ejemplo <span class="ot">&lt;-</span> ejemplo <span class="sc">%&gt;%</span> </span>
-<span id="cb25-2"><a href="#cb25-2"></a>  <span class="fu">corpus</span>() <span class="sc">%&gt;%</span> </span>
-<span id="cb25-3"><a href="#cb25-3"></a>  <span class="fu">tokens</span>( <span class="at">remove_punct =</span> <span class="cn">TRUE</span>) <span class="sc">%&gt;%</span> <span class="co"># remover puntuación</span></span>
-<span id="cb25-4"><a href="#cb25-4"></a>  <span class="fu">tokens_select</span>(<span class="at">pattern =</span> quanteda<span class="sc">::</span><span class="fu">stopwords</span>(<span class="st">"es"</span>), <span class="at">selection =</span> <span class="st">"remove"</span>) <span class="sc">%&gt;%</span> <span class="co"># remover stopwords</span></span>
-<span id="cb25-5"><a href="#cb25-5"></a>  <span class="fu">dfm</span>()  </span>
-<span id="cb25-6"><a href="#cb25-6"></a></span>
-<span id="cb25-7"><a href="#cb25-7"></a>dfm_ejemplo</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb27"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1"></a>dfm_ejemplo2 <span class="ot">&lt;-</span> ejemplo <span class="sc">%&gt;%</span> </span>
+<span id="cb27-2"><a href="#cb27-2"></a>  <span class="fu">corpus</span>() <span class="sc">%&gt;%</span> </span>
+<span id="cb27-3"><a href="#cb27-3"></a>  <span class="fu">tokens</span>( <span class="at">remove_punct =</span> <span class="cn">TRUE</span>) <span class="sc">%&gt;%</span> <span class="co"># remover puntuación</span></span>
+<span id="cb27-4"><a href="#cb27-4"></a>  <span class="fu">tokens_select</span>(<span class="at">pattern =</span> quanteda<span class="sc">::</span><span class="fu">stopwords</span>(<span class="st">"es"</span>), <span class="at">selection =</span> <span class="st">"remove"</span>) <span class="sc">%&gt;%</span> <span class="co"># remover stopwords</span></span>
+<span id="cb27-5"><a href="#cb27-5"></a>  <span class="fu">dfm</span>()  </span>
+<span id="cb27-6"><a href="#cb27-6"></a></span>
+<span id="cb27-7"><a href="#cb27-7"></a>dfm_ejemplo2</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Document-feature matrix of: 2 documents, 6 features (41.67% sparse) and 0 docvars.
        features
@@ -1077,6 +1127,475 @@ docs    gato tirano casa amo señor esclavo
 <section id="volvamos-a-las-noticias" class="slide level2">
 <h2>Volvamos a las noticias</h2>
 <p>Construiremos una matriz DFM</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb29"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb29-1"><a href="#cb29-1"></a><span class="fu">set.seed</span>(<span class="dv">123</span>)</span>
+<span id="cb29-2"><a href="#cb29-2"></a>corpus <span class="ot">&lt;-</span> data <span class="sc">%&gt;%</span> </span>
+<span id="cb29-3"><a href="#cb29-3"></a>  <span class="fu">select</span>(<span class="at">text =</span> cuerpo) <span class="sc">%&gt;%</span> </span>
+<span id="cb29-4"><a href="#cb29-4"></a>  <span class="fu">sample_frac</span>(<span class="fl">0.2</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb29-5"><a href="#cb29-5"></a>  <span class="fu">corpus</span>()</span>
+<span id="cb29-6"><a href="#cb29-6"></a></span>
+<span id="cb29-7"><a href="#cb29-7"></a>dfm <span class="ot">&lt;-</span> corpus <span class="sc">%&gt;%</span> </span>
+<span id="cb29-8"><a href="#cb29-8"></a>  <span class="fu">tokens</span>() <span class="sc">%&gt;%</span> </span>
+<span id="cb29-9"><a href="#cb29-9"></a>  <span class="fu">dfm</span>()  </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="fragment">
+<p>Tenemos más de 100.000 columnas</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb30"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb30-1"><a href="#cb30-1"></a><span class="fu">dim</span>(dfm)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1]  11685 118903</code></pre>
+</div>
+</div>
+</div>
+</section>
+<section id="pre-procesamiento-con-quanteda" class="slide level2">
+<h2>Pre procesamiento con Quanteda</h2>
+<p>Reduzcamos un poco el número de <em>tokens</em> para facilitar el procesamiento</p>
+<ul>
+<li>signos de puntuación</li>
+<li>símbolos extraños</li>
+<li>palabras poco significativas (<em>stopwords</em>)</li>
+<li>palabras con menos de 3 caracteres</li>
+<li>palabras que aparecen menos de 10 veces</li>
+</ul>
+<div class="fragment">
+<div class="cell">
+<div class="sourceCode cell-code" id="cb32"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb32-1"><a href="#cb32-1"></a><span class="fu">set.seed</span>(<span class="dv">123</span>)</span>
+<span id="cb32-2"><a href="#cb32-2"></a>tokens_data <span class="ot">&lt;-</span> data <span class="sc">%&gt;%</span> </span>
+<span id="cb32-3"><a href="#cb32-3"></a>  <span class="fu">select</span>(<span class="at">text =</span> cuerpo) <span class="sc">%&gt;%</span> </span>
+<span id="cb32-4"><a href="#cb32-4"></a>  <span class="fu">sample_frac</span>(<span class="fl">0.2</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb32-5"><a href="#cb32-5"></a>  <span class="fu">corpus</span>() <span class="sc">%&gt;%</span> </span>
+<span id="cb32-6"><a href="#cb32-6"></a>  <span class="fu">tokens</span>(<span class="at">remove_punct =</span> <span class="cn">TRUE</span>, <span class="at">remove_symbols =</span> <span class="cn">TRUE</span>) <span class="sc">%&gt;%</span> <span class="co"># remover cosas</span></span>
+<span id="cb32-7"><a href="#cb32-7"></a>  <span class="fu">tokens_select</span>( <span class="at">pattern =</span> <span class="fu">stopwords</span>(<span class="st">"es"</span>), <span class="at">selection =</span> <span class="st">"remove"</span>, <span class="at">min_nchar=</span>3L) <span class="co"># remover más cosas </span></span>
+<span id="cb32-8"><a href="#cb32-8"></a></span>
+<span id="cb32-9"><a href="#cb32-9"></a>dfm2 <span class="ot">&lt;-</span> tokens_data <span class="sc">%&gt;%</span> </span>
+<span id="cb32-10"><a href="#cb32-10"></a>  <span class="fu">dfm</span>() <span class="sc">%&gt;%</span> </span>
+<span id="cb32-11"><a href="#cb32-11"></a>  <span class="fu">dfm_trim</span>(<span class="at">min_termfreq =</span> <span class="dv">10</span>) <span class="co"># frecuencia mínima</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</div>
+<div class="fragment">
+<p>Revisemos el tamaño de la matriz</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb33"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb33-1"><a href="#cb33-1"></a><span class="fu">dim</span>(dfm2)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 11685 23024</code></pre>
+</div>
+</div>
+</div>
+</section>
+<section id="exploremos-el-dataset-1" class="slide level2">
+<h2>Exploremos el dataset</h2>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb35"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb35-1"><a href="#cb35-1"></a>largo_textos <span class="ot">&lt;-</span>  <span class="fu">map_int</span>(tokens_data, length)</span>
+<span id="cb35-2"><a href="#cb35-2"></a>df_largo <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">largo =</span> largo_textos)</span>
+<span id="cb35-3"><a href="#cb35-3"></a>df_largo <span class="sc">%&gt;%</span> </span>
+<span id="cb35-4"><a href="#cb35-4"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> largo)) <span class="sc">+</span></span>
+<span id="cb35-5"><a href="#cb35-5"></a>  <span class="fu">geom_histogram</span>(<span class="at">binwidth =</span> <span class="dv">15</span>) <span class="sc">+</span></span>
+<span id="cb35-6"><a href="#cb35-6"></a>  <span class="fu">theme_bw</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img data-src="index_files/figure-revealjs/plot_largo-1.png" width="960"></p>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb36"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb36-1"><a href="#cb36-1"></a><span class="fu">summary</span>(df_largo<span class="sc">$</span>largo)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>   Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
+      2     188     290     352     440    5256 </code></pre>
+</div>
+</div>
+</section>
+<section id="exploremos-el-dataset-2" class="slide level2">
+<h2>Exploremos el dataset</h2>
+<p>Exploremos las palabras más y menos comunes</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb38"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb38-1"><a href="#cb38-1"></a>dfm2 <span class="sc">%&gt;%</span> </span>
+<span id="cb38-2"><a href="#cb38-2"></a>  quanteda<span class="sc">::</span><span class="fu">topfeatures</span>(<span class="at">n =</span> <span class="dv">10</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>gobierno personas  podemos     años    horas  partido   españa      dos 
+   23135    15316    11717    11530    11285    11232    11190    11188 
+  madrid      así 
+   10997    10400 </code></pre>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb40"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb40-1"><a href="#cb40-1"></a>dfm2 <span class="sc">%&gt;%</span> </span>
+<span id="cb40-2"><a href="#cb40-2"></a>  quanteda<span class="sc">::</span><span class="fu">topfeatures</span>(<span class="at">n =</span> <span class="dv">10</span>, <span class="at">decreasing =</span> F)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>    palestina     israelíes perturbadoras      gestoría        cautos 
+           10            10            10            10            10 
+     coordinó      exchófer      aportara          1968       actuara 
+           10            10            10            10            10 </code></pre>
+</div>
+</div>
+</section></section>
+<section>
+<section id="recuperación-de-información" class="title-slide slide level1 center" data-background-color="aquamarine">
+<h1>Recuperación de información</h1>
+
+</section>
+<section id="recuperación-de-información-1" class="slide level2">
+<h2>Recuperación de información</h2>
+<p>Del inglés <em>information retrieval</em></p>
+<div class="fragment">
+<p>Búsquedas de similitud</p>
+</div>
+<div class="fragment">
+<p>Queremos todos los textos que se parezcan a…</p>
+</div>
+<div class="fragment">
+<p>Se utiliza cuando no estamos completamente seguros de lo que buscamos</p>
+</div>
+</section>
+<section id="recuperación-de-información-2" class="slide level2">
+<h2>Recuperación de información</h2>
+<p>Queremos encontrar textos cercanos a este</p>
+<div class="cell">
+<div class="cell-output-display">
+<table data-quarto-postprocess="true">
+<thead>
+<tr class="header">
+<th style="text-align: left;" data-quarto-table-cell-role="th">texto</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">agentes de la policía nacional han auxiliado a dos ciudadanas españolas víctimas de violencia de género en el extranjero.una de las mujeres residía en la ciudad palestina de hebrón. casada con un ciudadano palestino desde 2017, vivía recluida junto a su hija de 4 años en casa de sus suegros sufriendo agresiones físicas por parte de su marido y sin libertad de movimientos. en el otro caso, la víctima vivía incomunicada en praga, sin acceso a su teléfono móvil ni a su tarjeta bancaria, sufriendo constantes amenazas de muerte así como de quitarle sus hijos si intentaba escapar de esa situación. la asistencia recibida por parte de los agregados de interior de la policía desplegados en el extranjero ha posibilitado el regreso a españa de las mujeres junto con sus hijos. en el primer caso, se trata de una mujer y su hija menor de 4 años, ambas españolas con residencia en la ciudad palestina de hebrón. la víctima, casada con un ciudadano palestino desde 2017, sufría malos tratos. así lo reveló cuando contactó con el consulado general de españa en jerusalén el pasado 10 de enero manifestó su pretensión de huir a nuestro país con su hija por la situación de reclusión que padecía desde hacía un año en casa de sus suegros, con agresiones físicas por parte de su marido, sin libertad de movimientos y con privación de alimentos y recursos económicos. la mujer había comunicado estos hechos a la policía local de hebrón, si bien no obtuvo una solución a la situación sufrida y tampoco quería denunciarlos pues, aparte de por su integridad, temía que la validez del permiso que su marido le había firmado, autorizándola para viajar a españa con la niña, se viera comprometida y pudieran quitarle a la menor. gracias a las gestiones realizadas por el consulado general de españa en jerusalén con las autoridades israelíes, se consiguieron acelerar y obtener los permisos necesarios para que madre e hija volaran a españa. para ello resultaron imprescindibles las urgentes gestiones realizadas en el ámbito administrativo por los miembros de la diplomacia española en israel, pero también las labores de apoyo y asesoramiento a la víctima, quien ha manifestado su intención de denunciar lo ocurrido ante las autoridades españolas. en otra actuación realizada, en esta ocasión en colaboración con las autoridades de la república checa y con la embajada de españa en ese país, se ha logrado la repatriación de una mujer española que, presuntamente, estaba siendo maltratada por su pareja. junto a ella, también han sido repatriados sus dos hijos, ambos menores de edad. las investigaciones policiales comenzaron cuando se tuvo conocimiento del presunto maltrato sufrido por una mujer, de nacionalidad española, pareja de un individuo checo con el que residía en praga junto a sus dos hijos, de tres y un año de edad. esa información incluía un parte médico en el que constaba que la víctima había sido atendida por una agresión reiterada por parte de su novio, presentando hinchazón en ambos labios, dolores en la cabeza, espalda y piernas. el padre de la víctima, al tener conocimiento de estos hechos, se puso en contacto con la embajada de españa en praga para informarles del maltrato físico y psicológico que estaba viviendo su hija, así como que se encontraba privada de libertad de movimientos. además, les hizo constar que temía por su vida y la de sus nietos.</td>
+</tr>
+</tbody>
+</table>
+
+
+</div>
+</div>
+</section></section>
+<section>
+<section id="cómo-comparo-los-textos" class="title-slide slide level1 center">
+<h1>¿Cómo comparo los textos?</h1>
+
+</section>
+<section id="qué-necesito" class="slide level2">
+<h2>¿Qué necesito?</h2>
+<p>Convertir los textos en vectores</p>
+<div class="fragment">
+<p>Utilizar alguna medida de distancia</p>
+</div>
+<div class="fragment">
+<p><strong>¿Podríamos utilizar los vectores de la matriz dfm?</strong></p>
+</div>
+<div class="fragment">
+<p>Sí, pero usaremos algo que funciona mejor</p>
+</div>
+</section>
+<section id="tf-idf" class="slide level2">
+<h2>TF-IDF</h2>
+<p>TF-IDF permite enriquecer la descripción de los textos</p>
+<p>Un <em>token</em> (palabra) es importante cuando:</p>
+<ul>
+<li>Aparece muchas veces en un texto</li>
+<li>Se repite poco a través de los documentos</li>
+</ul>
+<div class="fragment">
+<p><em>Term frequency</em></p>
+<p><em>Inverse document frequency</em></p>
+<p><span class="math inline">\(tfidf = tf*idf\)</span></p>
+</div>
+<div class="fragment">
+<p>Existen varias expresiones para tf</p>
+<p><span class="math inline">\(conteo = f_{ij}\)</span></p>
+<p><span class="math inline">\(proporción = \frac{f_{ij}}{\sum_jf_{ij}}\)</span></p>
+<p><span class="math inline">\(logcount = 1 + log_{10}(f_{ij})\; si \; f_{ij} &gt; 0\)</span></p>
+</div>
+<div class="fragment">
+<p><strong>Hay más opciones</strong></p>
+</div>
+</section>
+<section id="ejemplos-tf" class="slide level2">
+<h2>Ejemplos tf</h2>
+<p>Matriz original</p>
+<div class="cell">
+<div class="cell-output cell-output-stdout">
+<pre><code>Document-feature matrix of: 2 documents, 15 features (40.00% sparse) and 0 docvars.
+       features
+docs    mi gato es un tirano en casa . él amo
+  text1  1    1  2  1      1  1    1 2  1   1
+  text2  1    1  0  0      0  0    0 1  0   0
+[ reached max_nfeat ... 5 more features ]</code></pre>
+</div>
+</div>
+<div class="fragment">
+<p>Proporción</p>
+<div class="cell">
+<div class="cell-output cell-output-stdout">
+<pre><code>Document-feature matrix of: 2 documents, 15 features (40.00% sparse) and 0 docvars.
+       features
+docs       mi  gato    es    un tirano    en  casa     .    él   amo
+  text1 0.071 0.071 0.143 0.071  0.071 0.071 0.071 0.143 0.071 0.071
+  text2 0.167 0.167 0     0      0     0     0     0.167 0     0    
+[ reached max_nfeat ... 5 more features ]</code></pre>
+</div>
+</div>
+</div>
+<div class="fragment">
+<p>Matriz logcount</p>
+<div class="cell">
+<div class="cell-output cell-output-stdout">
+<pre><code>Document-feature matrix of: 2 documents, 15 features (40.00% sparse) and 0 docvars.
+       features
+docs    mi gato      es un tirano en casa       . él amo
+  text1  1    1 1.30103  1      1  1    1 1.30103  1   1
+  text2  1    1 0        0      0  0    0 1.00000  0   0
+[ reached max_nfeat ... 5 more features ]</code></pre>
+</div>
+</div>
+</div>
+</section>
+<section id="idf" class="slide level2">
+<h2>idf</h2>
+<p><span class="math inline">\(idf = log10(1 + \frac{N}{df_j})\)</span></p>
+<p><span class="math inline">\(N\)</span> = Número total de documentos</p>
+<p><span class="math inline">\(df_j\)</span> = Número de documentos que contienen el término <span class="math inline">\(j\)</span></p>
+<p><strong>Nota</strong>: El valor 1 puede ser reemplazado por otra constante</p>
+<p>En el caso de quanteda se utiliza una constante cercana 0</p>
+<div class="fragment">
+<p>Ejemplo de matriz idf</p>
+<div class="cell">
+<div class="cell-output cell-output-stdout">
+<pre><code>     mi    gato      es      un  tirano      en    casa       .      él     amo 
+0.00000 0.00000 0.30103 0.30103 0.30103 0.30103 0.30103 0.00000 0.30103 0.30103 
+      y   señor     soy esclavo      de 
+0.30103 0.30103 0.30103 0.30103 0.30103 </code></pre>
+</div>
+</div>
+</div>
+</section>
+<section id="todo-junto-tfidf" class="slide level2">
+<h2>Todo junto: tfidf</h2>
+<p>Matriz tfidf</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb46"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb46-1"><a href="#cb46-1"></a>dfm_ejemplo <span class="sc">%&gt;%</span> </span>
+<span id="cb46-2"><a href="#cb46-2"></a>  <span class="fu">dfm_tfidf</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Document-feature matrix of: 2 documents, 15 features (40.00% sparse) and 0 docvars.
+       features
+docs    mi gato      es      un  tirano      en    casa .      él     amo
+  text1  0    0 0.60206 0.30103 0.30103 0.30103 0.30103 0 0.30103 0.30103
+  text2  0    0 0       0       0       0       0       0 0       0      
+[ reached max_nfeat ... 5 more features ]</code></pre>
+</div>
+</div>
+<p>Matriz de conteos simples</p>
+<div class="cell">
+<div class="cell-output cell-output-stdout">
+<pre><code>Document-feature matrix of: 2 documents, 15 features (40.00% sparse) and 0 docvars.
+       features
+docs    mi gato es un tirano en casa . él amo
+  text1  1    1  2  1      1  1    1 2  1   1
+  text2  1    1  0  0      0  0    0 1  0   0
+[ reached max_nfeat ... 5 more features ]</code></pre>
+</div>
+</div>
+</section>
+<section id="ejercicio-construir-matriz-a-mano" class="slide level2">
+<h2>Ejercicio: construir matriz a mano</h2>
+<p>Construye una matriz tfidf ayudándote con un archivo excel. Para el término <span class="math inline">\(tf\)</span>, considera simplemente la frecuencia (no considerar el logaritmo). Para el término <span class="math inline">\(idf\)</span>, considera la expresión <span class="math inline">\(\frac{N}{df_j}\)</span></p>
+<p>Sigue los siguientes pasos:</p>
+<ul>
+<li>Identifica las palabras únicas</li>
+<li>Construye una matriz dfm (frecuencias simples de palabras en cada texto)</li>
+<li>Calcula el valor de idf para cada término</li>
+<li>Multiplica tf * idf</li>
+</ul>
+<ol type="1">
+<li>El pan alcanza para todos</li>
+<li>menos para la inmensa humanidad</li>
+<li>y lo mismo el arroz</li>
+<li>y lo mismo el azúcar</li>
+<li>y lo mismo las telas</li>
+<li>y lo mismo los libros</li>
+<li>alcanza para todos menos para</li>
+<li>la inmensa humanidad.</li>
+</ol>
+</section>
+<section id="apliquemos-lo-aprendido" class="slide level2">
+<h2>Apliquemos lo aprendido</h2>
+<p>Teníamos una matriz dfm</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb49"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb49-1"><a href="#cb49-1"></a><span class="fu">set.seed</span>(<span class="dv">123</span>)</span>
+<span id="cb49-2"><a href="#cb49-2"></a>tokens_data <span class="ot">&lt;-</span> data <span class="sc">%&gt;%</span> </span>
+<span id="cb49-3"><a href="#cb49-3"></a>  <span class="fu">select</span>(<span class="at">text =</span> cuerpo) <span class="sc">%&gt;%</span> </span>
+<span id="cb49-4"><a href="#cb49-4"></a>  <span class="fu">sample_frac</span>(<span class="fl">0.2</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb49-5"><a href="#cb49-5"></a>  <span class="fu">corpus</span>() <span class="sc">%&gt;%</span> </span>
+<span id="cb49-6"><a href="#cb49-6"></a>  <span class="fu">tokens</span>(<span class="at">remove_punct =</span> <span class="cn">TRUE</span>, <span class="at">remove_symbols =</span> <span class="cn">TRUE</span>) <span class="sc">%&gt;%</span> <span class="co"># remover cosas</span></span>
+<span id="cb49-7"><a href="#cb49-7"></a>  <span class="fu">tokens_select</span>( <span class="at">pattern =</span> <span class="fu">stopwords</span>(<span class="st">"es"</span>), <span class="at">selection =</span> <span class="st">"remove"</span>, <span class="at">min_nchar=</span>3L) <span class="co"># remover más cosas </span></span>
+<span id="cb49-8"><a href="#cb49-8"></a></span>
+<span id="cb49-9"><a href="#cb49-9"></a>dfm2 <span class="ot">&lt;-</span> tokens_data <span class="sc">%&gt;%</span> </span>
+<span id="cb49-10"><a href="#cb49-10"></a>  <span class="fu">dfm</span>() <span class="sc">%&gt;%</span> </span>
+<span id="cb49-11"><a href="#cb49-11"></a>  <span class="fu">dfm_trim</span>(<span class="at">min_termfreq =</span> <span class="dv">10</span>) <span class="co"># frecuencia mínima</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="convertir-a-tfidf" class="slide level2">
+<h2>Convertir a tfidf</h2>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb50"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb50-1"><a href="#cb50-1"></a>tfidf <span class="ot">&lt;-</span> dfm2 <span class="sc">%&gt;%</span> </span>
+<span id="cb50-2"><a href="#cb50-2"></a>  <span class="fu">dfm_tfidf</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p><strong>¿Qué podemos hacer con esto?</strong></p>
+<p><strong>¿Cómo encontramos un texto parecido al que vimos?</strong></p>
+</section>
+<section id="medida-de-distancia-similitud-coseno" class="slide level2">
+<h2>Medida de distancia: similitud coseno</h2>
+<p>Utilizamos similitud coseno para comparar todos los <del>vectores</del> textos entre sí</p>
+<p>La similitud coseno se mueve entre -1 y 1</p>
+<p><span class="math inline">\(cos(\theta) = \frac{A \cdot B}{||A|| ||B||} = \frac{\sum_{i=1}^{n}A_i B_i}{\sqrt{\sum_{i=1}^nA_i^2 \cdot \sum_{i=1}^nB_i^2 } }\)</span></p>
+</section>
+<section id="representación-geométrica" class="slide level2">
+<h2>Representación geométrica</h2>
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="imagenes/cosine.jpg" width="800"></p>
+</figure>
+</div>
+</section>
+<section id="otras-medidas-de-distancia" class="slide level2">
+<h2>Otras medidas de distancia</h2>
+<ul>
+<li>Euclidiana</li>
+<li>Manhattan</li>
+<li>Minkowski</li>
+<li>Hamming</li>
+<li>Chebychev</li>
+<li>Mahalanobis</li>
+</ul>
+</section>
+<section id="ejemplo-similitud-coseno" class="slide level2">
+<h2>Ejemplo similitud coseno</h2>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb51"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb51-1"><a href="#cb51-1"></a>vec1 <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">3</span>, <span class="dv">5</span>, <span class="dv">9</span>)</span>
+<span id="cb51-2"><a href="#cb51-2"></a>vec2 <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="fl">0.1</span>, <span class="dv">4</span>, <span class="fl">6.9</span>)</span>
+<span id="cb51-3"><a href="#cb51-3"></a></span>
+<span id="cb51-4"><a href="#cb51-4"></a><span class="fu">library</span>(lsa)</span>
+<span id="cb51-5"><a href="#cb51-5"></a><span class="fu">cosine</span>(vec1, vec2)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>          [,1]
+[1,] 0.9632823</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb53"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb53-1"><a href="#cb53-1"></a><span class="fu">set.seed</span>(<span class="dv">1234</span>)</span>
+<span id="cb53-2"><a href="#cb53-2"></a>vec1_runif <span class="ot">&lt;-</span> <span class="fu">runif</span>(<span class="dv">100</span>)</span>
+<span id="cb53-3"><a href="#cb53-3"></a>vec2_rnorm <span class="ot">&lt;-</span> <span class="fu">rnorm</span>(<span class="dv">100</span>)</span>
+<span id="cb53-4"><a href="#cb53-4"></a><span class="fu">cosine</span>(vec1_runif, vec2_rnorm)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>         [,1]
+[1,] 0.064023</code></pre>
+</div>
+</div>
+</section>
+<section id="similitud-coseno-a-mano" class="slide level2">
+<h2>Similitud coseno “a mano”</h2>
+<p>Para comprobar, podemos crear nuestra propia función</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb55"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb55-1"><a href="#cb55-1"></a>get_cosine <span class="ot">&lt;-</span> <span class="cf">function</span>(vec1, vec2) {</span>
+<span id="cb55-2"><a href="#cb55-2"></a>    <span class="fu">return</span>( <span class="fu">sum</span>(vec1<span class="sc">*</span>vec2) <span class="sc">/</span> <span class="fu">sqrt</span>(<span class="fu">sum</span>(vec1<span class="sc">^</span><span class="dv">2</span>)<span class="sc">*</span><span class="fu">sum</span>(vec2<span class="sc">^</span><span class="dv">2</span>)) )</span>
+<span id="cb55-3"><a href="#cb55-3"></a>}  </span>
+<span id="cb55-4"><a href="#cb55-4"></a></span>
+<span id="cb55-5"><a href="#cb55-5"></a><span class="fu">get_cosine</span>(vec1_runif, vec2_rnorm)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.064023</code></pre>
+</div>
+</div>
+<div class="fragment">
+<p>Es recomendable usar paquetes especializados con buenas implementaciones</p>
+</div>
+</section>
+<section id="similitud-coseno-noticias" class="slide level2">
+<h2>Similitud coseno noticias</h2>
+<p><code>textstat_simil</code> calcula similitud coseno</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb57"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb57-1"><a href="#cb57-1"></a>distancia <span class="ot">&lt;-</span> <span class="fu">textstat_simil</span>(tfidf, <span class="at">method =</span> <span class="st">"cosine"</span>)</span>
+<span id="cb57-2"><a href="#cb57-2"></a><span class="fu">dim</span>(distancia)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 11685 11685</code></pre>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb59"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb59-1"><a href="#cb59-1"></a>distancia[<span class="dv">1</span><span class="sc">:</span><span class="dv">5</span>, <span class="dv">1</span><span class="sc">:</span><span class="dv">5</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>5 x 5 Matrix of class "dspMatrix"
+            text1       text2       text3      text4       text5
+text1 1.000000000 0.005608309 0.016062859 0.01338767 0.007175373
+text2 0.005608309 1.000000000 0.015767383 0.01669805 0.004827845
+text3 0.016062859 0.015767383 1.000000000 0.02180083 0.008654448
+text4 0.013387671 0.016698052 0.021800829 1.00000000 0.029476244
+text5 0.007175373 0.004827845 0.008654448 0.02947624 1.000000000</code></pre>
+</div>
+</div>
+</section>
+<section id="recuperando-información" class="slide level2">
+<h2>Recuperando información</h2>
+<p>Buscamos los 3 más cercanos a la fila 3 (texto original)</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb61"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb61-1"><a href="#cb61-1"></a><span class="fu">sort</span>(distancia[<span class="dv">3</span>, ], <span class="at">decreasing =</span> T)[<span class="dv">2</span><span class="sc">:</span><span class="dv">4</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>  text627  text8264  text1328 
+0.1825487 0.1666291 0.1501620 </code></pre>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb63"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb63-1"><a href="#cb63-1"></a>most_similar <span class="ot">&lt;-</span> corpus[<span class="dv">627</span>]</span>
+<span id="cb63-2"><a href="#cb63-2"></a>similar_df <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">texto =</span> most_similar)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<div class="cell-output-display">
+<table data-quarto-postprocess="true">
+<thead>
+<tr class="header">
+<th style="text-align: left;" data-quarto-table-cell-role="th"></th>
+<th style="text-align: left;" data-quarto-table-cell-role="th">texto</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">text627</td>
+<td style="text-align: left;">rosa, laura, marta y ana. ellas también han sufrido violencia de género. pero hasta hoy han estado silenciadas. son solo un reflejo de las 305.271 mujeres que han sufrido violencia psicológica entre 2015 y 2019. sus dolorosos testimonios no cuentan con un altavoz público, ni tampoco con un respaldo tan mediático y político como el que ha recibido rocío carrasco tras reconocer que había sufrido maltrato psicológico por parte de su ex marido, antonio david flores. síndrome de que no cuentan con apoyo es que hablan con la razón con pseudónimos y, por supuesto, sin ofrecer su imagen. es el miedo y el pánico al que se enfrentan cada día el que las impide fotografiarse. el temor al que su maltratador continúe impidiéndolas vivir dignamente cuando tratan de reconfigurar sus vidas rotas.cultura.rocioterapia malos tratos, malas artes, malas prácticasel caso de rocío carrasco ha abierto, sin embargo, una ventana de esperanza entre las mujeres víctimas de violencia de género. así lo constatan varias asociaciones como ana bella o alma, que reconocen a la razón que desde que se dio a conocer su testimonio no han parado de recibir llamadas de luchadoras que se atreven tímidamente a contar sus vivencias. precisamente el caso de la hija de rocío jurado se ha encontrado con el apoyo de parte de la esfera política. destaca la ministra de igualdad irene montero que la ha dado su apoyo públicamente. sin embargo, miles de mujeres continúan a día de hoy invisibilizadas. esta es la historia de mujeres valientes que se han visto reflejadas en el relato de rocío carrasco, pero careciendo del apoyo social que ella si tiene.el testimonio de rosa es desolador. su maltratador ya ha muerto, nos cuenta. "es un alivio aunque parezca horrible, pero es importante que se vaya ese hijo de puta". "doy gracias a que ha muerto, pero me ha dejado unas cicatrices a mi y a mi hijo de por vida". pero esto no se soluciona con su muerte, porque el maltratador se encarga de que tu vida sea una mierda hasta que te mueres", comenta angustiada. rosa llegó a tratar de suicidarse la primera vez que denunció a su maltratador. incide en la importancia de llamar maltratador a su ex pareja. "es lo que es". antes ya había sufrido malos tratos, incluso con su bebé en sus entrañas. pero lo más duro para ella llegaría una vez que separó. "el problema llega entonces, a los niños no se les considera víctimas y el maltratador tiene derecho a ver a sus hijos. él pegaba a mi hijo y cuando regresaba de casa de su padre me insultaba. mi hijo me llamaba borracha, mala madre... este es el modus operandi de un maltratador", explica. mi hijo está diagnosticado como un enfermo mental y ahora estoy tratando de trabajar con él, de resetearle, pero es muy difícil recuperarle". nos pide que reflejemos que "es importante que la ley cambie para que el maltratador no tenga visitas ni la patria potestad de los hijos. así como que a los hijos de víctimas de violencia machista no se les ponga el adjetivo de enfermos mentales".laura se siente totalmente identificada con el caso de rocío carrasco, pero pide visibilidad para todas. "hay cuarenta mil rocíitos, cuarenta mil lauras, o carmenes...". denuncia el abandono que siente por parte de la justicia. se confiesa desamparada. ella ha sufrido maltrato psicológico y pide conciencia social porque "al igual que hay una economía sumergida, hay un maltrato sumergido. el psicológico no se ve. parece que como no te han dejado la cara morada, nadie te cree". de hecho, asegura que su abogada le quitó de la cabeza esa denuncia por lo difícil que es de demostrar. si durante el matrimonio sufrió este maltrato ahora sufre el económico. "me llegó a decir que para pagarme un sueldo a mí, se quedaba él con la custodia del niño y así le pagaba yo, como si la manutención fuese un dinero para mí y no para el pequeño y para sus necesidades", lamenta. ahora, el supremo ha reconocido el maltrato económico y tiene algo de esperanza. "me debe 50.000 euros en manutención".marta se siente invisibilizada. "no podemos hablar porque no nos apoya nadie". es por eso que el caso de rocío cree que es una ventana. "llevamos sufriendo años y no podemos hablar de esto. no es justo no recibir un euro para mis hijos de mi maltratador ni de las instituciones", dice. "a diferencia de rocío yo no puedo hablar ni contar mi dolor". su marido no la pegaba, pero el maltrato psicológico era constante. "él quería que estuviese encerrada en casa, me decía que ropa me debía poner y hasta me exigió que dejase mi trabajo porque no ganaba mucho dinero". el problema fue cuando dio a luz a su hijo, relata. "cuando nos separamos y le tocaba ir a su casa, le tenía encerrado en su habitación. trató de ponerle en mi contra. me dijo que iba a conseguir que mi hijo me odiase. le manipuló. consiguió que mi propio hijo me denunciara por malos tratos falsos. mi hijo me llamaba puta, mala madre. imagínate cuando la guardia civil me llega y me dice que estaba denunciada por mi hijo. fue el peor día de mi vida", relata.ana se siente agotada y cansada. cree que nadie entiende a las mujeres supervivientes como ella. ha sufrido maltrato físico y psicológico, pero lo peor es la perdida de su hija y la "manipulación" de su ex. lleva seis años sin ver a su hija, a pesar de tener la guarda y custodia y resoluciones de la audiencia provincial que reconocen que el padre tiene que entregarle a su hija.fue maltratada físicamente durante el matrimonio. "mi ex me sacó de la cama a rastras de lso pelos con una mano y en la otra tenía un cuchillo enorme de carnicero. lo hizo delante de mi hija". lo denunció, pero asegura que la jueza no quiso escucharla. pero el peor maltrato, lamenta, es al que ha sometido a su hija. los padres, coinciden todos los testimonios, tratan de hacer daño a las mujeres con sus hijos menores. "envenenó su mente hasta conseguir que me odiara para apartarla completamente de mi vida". pone el punto de atención en ello. denuncia que no existen leyes que "penalicen la manipulación de los padres maltratadores".cuenta, también, cómo transcurrió su matrimonio. tras casarse vio que algo no iba bien. "no podía hablar con nadie por la calle. un hola o un adiós provocaba una discusión enorme. era celoso, controlador y posesivo. no podía depilarme, ni ducharme en casa porque pensaba que me iba a ir con otro hombre. tenía que ducharme en el trabajo. si me lavaba los dientes para ir al médico, decía que me quería ligar al médico y si me arreglaba para ir a una reunión con los profesores de mi hija, igual. cuando entraba con las niñas en casa, las preguntaba con quién había hablado mamá en el parque. llegó un momento que mis hijas estaban tan aleccionadas que nada más entrar por la puerta le contaban con quién hablaba en la calle. lo más normal es que si vas al parque con tus hijas te relaciones con los demás padres y madres. cuando iba a la piscina con las niñas, decía que me ponía el bañador para ligar con hombres. así era todo".</td>
+</tr>
+</tbody>
+</table>
+
+
+</div>
+</div>
+</section>
+<section id="miremos-el-segundo" class="slide level2">
+<h2>Miremos el segundo</h2>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb64"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb64-1"><a href="#cb64-1"></a>second <span class="ot">&lt;-</span> corpus[<span class="dv">8264</span>]</span>
+<span id="cb64-2"><a href="#cb64-2"></a>similar_df <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">texto =</span> second)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<div class="cell-output-display">
+<table data-quarto-postprocess="true">
+<thead>
+<tr class="header">
+<th style="text-align: left;" data-quarto-table-cell-role="th"></th>
+<th style="text-align: left;" data-quarto-table-cell-role="th">texto</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">text8264</td>
+<td style="text-align: left;">la delegación del gobierno contra la violencia de género ha confirmado como un nuevo caso de violencia de género el asesinato de una mujer de 44 años presuntamente a manos de su pareja en la línea de la concepción (cádiz), que eleva a seis las mujeres víctimas mortales por esa causa en lo que va de año en andalucía. desde su cuenta de twitter, la citada delegación del gobierno ha confirmado este martes este "nuevo caso de violencia de género" registrado el pasado sábado, 8 de agosto, en la provincia de cádiz, que eleva a 27 el número de mujeres asesinadas por violencia de género en españa en lo que va de año, y a 1.060 desde 2003, según informa. desde el gobierno explican además que la víctima, de 44 años de edad, tenía una hija mayor de edad y existían denuncias previas por violencia de género contra el presunto agresor por parte de ella. por su parte, la consejera de igualdad, políticas sociales y conciliación de la junta de andalucía, rocío ruiz, ha explicado desde la misma red social que ya son seis las mujeres víctimas mortales por violencia de género en la comunidad autónoma en este año 2020. así lo ha indicado la consejera en un apunte en su cuenta de twitter después de que "tristemente" se haya confirmado que dicho asesinato sucedido en la línea "es un nuevo caso de violencia machista", según señala también rocío ruiz, quien al hilo de este caso aprovecha su mensaje para animar a llamar al teléfono 900.200.999 "siempre ante la menor duda", e incluye la etiqueta #niunamenos. la policía nacional informó este lunes de la detención, en la línea, de un hombre de 42 años y natural de algeciras (cádiz) como presunto autor de la muerte de su pareja, la referida mujer de 44 años cuyo cuerpo sin vida fue localizado el pasado sábado junto a los jardines municipales saccone, donde pernoctaba habitualmente. al detenido le constan varias denuncias de la víctima por agresiones anteriores. según informó la policía en un comunicado, la investigación se inició tras localizar la policía local el cuerpo sin vida de la mujer y, una vez confirmado el fallecimiento por la asistencia sanitaria desplazada hasta el lugar, se activó a la comisión judicial para realizar el levantamiento del cadáver y su traslado hasta el instituto de medicina legal, con sede en algeciras, para su posterior autopsia. las primeras indagaciones determinaron que se trataba de una muerte violenta, ya que la víctima había fallecido debido a una hemorragia interna derivada de un fuerte traumatismo en el costado y presentaba además múltiples hematomas por todo el cuerpo. tras las gestiones realizadas por los agentes de la unidad de delincuencia especializada y violenta, junto con la ufam de la comisaría de la línea, se procedió a la detención de este hombre de 42 años como presunto autor de un delito de homicidio. el detenido fue trasladado a dependencias de la comisaría de la línea a la espera de la finalización del atestado policial para ser puesto a disposición del juzgado de instrucción en funciones de guardia de la línea.</td>
+</tr>
+</tbody>
+</table>
+
+
+</div>
+</div>
+</section>
+<section id="ejercicio-propuesto" class="slide level2">
+<h2>Ejercicio propuesto</h2>
+<p>Utiliza un set de datos de texto y conviértelo a una matriz tfidf, implementando los pasos vistos durante esta clase.</p>
+<p>Dependiendo del formato de descarga, es posible que tengas que utilizar herramientas de la clase anterior</p>
+<p>Usa de preferencia los datos de texto de tu trabajo de web scraping</p>
 </section></section>
 <section id="métodos-computacionales-para-las-ciencias-sociales" class="title-slide slide level1 center" data-background-color="aquamarine">
 <h1>Métodos computacionales para las ciencias sociales</h1>

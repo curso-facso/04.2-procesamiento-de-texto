@@ -18,7 +18,61 @@ execute:
 -   quanteda + regex
 -   Vectorización de textos
 
-# ¿Por qué es relevante conocer herramientas para manejar *strings*? {.center background-color="aquamarine"}
+# ¿Por qué es relevante conocer herramientas para trabajar con texto? {.center background-color="aquamarine"}
+
+## Aplicaciones
+
+<img src="imagenes/ejemplos_nlp.png" width="800" />
+
+
+
+## Relevancia
+
+La cantidad de datos de texto crece día a día de manera veloz
+
+. . .
+
+Es imposible analizarlo todo de manera manual
+
+. . .
+
+Necesitamos herramientas automáticas
+
+. . .
+
+
+::: columns
+::: {.column width="50%"}
+<img src="imagenes/logo_twitter.jpg" width="300" />
+:::
+
+::: {.column width="50%"}
+<img src="imagenes/logo_wiki.png" width="200" />
+:::
+:::
+
+## Desafíos al trabajar con texto
+
+El lenguaje:
+
+- Es ambiguo
+- Requiere un contexto
+- Es flexible
+
+. . .
+
+```{r ejemplo perro, eval=TRUE}
+animal <- "perro"
+if (animal == "perro") {
+  print("guau")
+}
+
+```
+
+**Si el animal es un perro, imprime un ladrido**
+
+
+
 
 ## Introducción a quanteda
 
@@ -229,6 +283,14 @@ En muchas ocasiones es útil representar el texto como un vector de números
 
 . . .
 
+Los vectores nos permiten hacer operaciones algebraicas
+
+. . .
+
+Los computadores no entienden palabras
+
+. . .
+
 ```{r}
 ejemplo <- data.frame(text = c("Mi gato es un tirano en casa. Él es amo y señor.",
                                "Soy esclavo de mi gato."
@@ -256,13 +318,13 @@ Removeremos lo siguiente:
 
 
 ```{r}
-dfm_ejemplo <- ejemplo %>% 
+dfm_ejemplo2 <- ejemplo %>% 
   corpus() %>% 
   tokens( remove_punct = TRUE) %>% # remover puntuación
   tokens_select(pattern = quanteda::stopwords("es"), selection = "remove") %>% # remover stopwords
   dfm()  
 
-dfm_ejemplo
+dfm_ejemplo2
 
 ```
 
@@ -299,8 +361,404 @@ Abre un archivo excel y sigue los siguientes pasos:
 Construiremos una matriz DFM
 
 ```{r}
+set.seed(123)
+corpus <- data %>% 
+  select(text = cuerpo) %>% 
+  sample_frac(0.2) %>% 
+  corpus()
+
+dfm <- corpus %>% 
+  tokens() %>% 
+  dfm()  
+
+
 
 ```
+. . .
+
+Tenemos más de 100.000 columnas
+
+```{r}
+dim(dfm)
+```
+
+## Pre procesamiento con Quanteda
+
+Reduzcamos un poco el número de *tokens* para facilitar el procesamiento
+
+- signos de puntuación
+- símbolos extraños
+- palabras poco significativas (*stopwords*)
+- palabras con menos de 3 caracteres
+- palabras que aparecen menos de 10 veces
+
+. . .
+
+```{r tokenizar}
+set.seed(123)
+tokens_data <- data %>% 
+  select(text = cuerpo) %>% 
+  sample_frac(0.2) %>% 
+  corpus() %>% 
+  tokens(remove_punct = TRUE, remove_symbols = TRUE) %>% # remover cosas
+  tokens_select( pattern = stopwords("es"), selection = "remove", min_nchar=3L) # remover más cosas 
+
+dfm2 <- tokens_data %>% 
+  dfm() %>% 
+  dfm_trim(min_termfreq = 10) # frecuencia mínima
+```
+
+. . .
+
+Revisemos el tamaño de la matriz
+
+```{r}
+dim(dfm2)
+```
+
+## Exploremos el dataset
+
+```{r plot_largo, fig.height=4}
+largo_textos <-  map_int(tokens_data, length)
+df_largo <- data.frame(largo = largo_textos)
+df_largo %>% 
+  ggplot(aes(x = largo)) +
+  geom_histogram(binwidth = 15) +
+  theme_bw()
+```
+
+```{r}
+summary(df_largo$largo)
+```
+
+## Exploremos el dataset
+
+Exploremos las palabras más y menos comunes
+
+```{r}
+dfm2 %>% 
+  quanteda::topfeatures(n = 10)
+```
+
+```{r}
+dfm2 %>% 
+  quanteda::topfeatures(n = 10, decreasing = F)
+```
+
+
+
+# Recuperación de información {.center background-color="aquamarine"}
+
+## Recuperación de información
+
+Del inglés *information retrieval*
+
+. . .
+
+Búsquedas de similitud 
+
+. . .
+
+Queremos todos los textos que se parezcan a...
+
+
+. . .
+
+Se utiliza cuando no estamos completamente seguros de lo que buscamos
+
+## Recuperación de información
+
+Queremos encontrar textos cercanos a este
+
+```{r texto inicial, echo=FALSE}
+violencia_genero <-  corpus[[3]]
+mostrar_texto <- data.frame(texto = violencia_genero)
+mostrar_texto %>% 
+  kbl()
+
+```
+# ¿Cómo comparo los textos?
+
+## ¿Qué necesito?
+
+Convertir los textos en vectores
+
+. . .
+
+Utilizar alguna medida de distancia 
+
+. . .
+
+**¿Podríamos utilizar los vectores de la matriz dfm?**
+
+. . .
+
+Sí, pero usaremos algo que funciona mejor 
+
+
+## TF-IDF
+
+TF-IDF permite enriquecer la descripción de los textos
+
+Un *token* (palabra) es importante cuando:
+
+- Aparece muchas veces en un texto
+- Se repite poco a través de los documentos 
+
+. . .
+
+*Term frequency* 
+
+*Inverse document frequency*
+
+$tfidf = tf*idf$
+
+. . .
+
+Existen varias expresiones para tf
+
+$conteo = f_{ij}$
+
+$proporción = \frac{f_{ij}}{\sum_jf_{ij}}$
+
+$logcount = 1 + log_{10}(f_{ij})\; si \; f_{ij} > 0$  
+
+. . .
+
+**Hay más opciones**
+
+## Ejemplos tf
+
+Matriz original
+
+
+```{r, echo=FALSE}
+dfm_ejemplo
+```
+
+. . .
+
+Proporción
+
+```{r, echo=FALSE}
+dfm_ejemplo %>% 
+  dfm_weight(scheme = "prop") %>% 
+  round(3)
+```
+. . .
+
+Matriz logcount
+
+```{r, echo=FALSE}
+dfm_ejemplo %>% 
+  dfm_weight(scheme = "logcount")
+```
+
+## idf
+
+$idf = log10(1 + \frac{N}{df_j})$
+
+$N$ = Número total de documentos 
+
+$df_j$ = Número de documentos que contienen el término $j$ 
+
+**Nota**: El valor 1 puede ser reemplazado por otra constante
+
+En el caso de quanteda se utiliza una constante cercana 0
+
+. . .
+
+Ejemplo de matriz idf
+
+```{r, echo=FALSE}
+dfm_ejemplo %>% 
+  docfreq(scheme = "inverse")
+
+
+```
+
+
+## Todo junto: tfidf
+
+Matriz tfidf
+
+```{r}
+dfm_ejemplo %>% 
+  dfm_tfidf()
+```
+
+Matriz de conteos simples
+
+```{r, echo=FALSE}
+dfm_ejemplo
+```
+
+## Ejercicio: construir matriz a mano
+
+Construye una matriz tfidf ayudándote con un archivo excel. Para el término $tf$, considera simplemente la frecuencia (no considerar el logaritmo). Para el término $idf$, considera la expresión $\frac{N}{df_j}$
+
+Sigue los siguientes pasos:
+
+- Identifica las palabras únicas
+- Construye una matriz dfm (frecuencias simples de palabras en cada texto)
+- Calcula el valor de idf para cada término 
+- Multiplica tf * idf
+
+
+1. El pan alcanza para todos
+2. menos para la inmensa humanidad
+3. y lo mismo el arroz
+4. y lo mismo el azúcar
+5. y lo mismo las telas
+6. y lo mismo los libros
+7. alcanza para todos menos para
+8. la inmensa humanidad.
+
+
+## Apliquemos lo aprendido
+
+Teníamos una matriz dfm
+
+```{r, eval=FALSE}
+set.seed(123)
+tokens_data <- data %>% 
+  select(text = cuerpo) %>% 
+  sample_frac(0.2) %>% 
+  corpus() %>% 
+  tokens(remove_punct = TRUE, remove_symbols = TRUE) %>% # remover cosas
+  tokens_select( pattern = stopwords("es"), selection = "remove", min_nchar=3L) # remover más cosas 
+
+dfm2 <- tokens_data %>% 
+  dfm() %>% 
+  dfm_trim(min_termfreq = 10) # frecuencia mínima
+
+```
+
+## Convertir a tfidf
+
+```{r}
+tfidf <- dfm2 %>% 
+  dfm_tfidf()
+  
+```
+
+**¿Qué podemos hacer con esto?**
+
+**¿Cómo encontramos un texto parecido al que vimos?**
+
+## Medida de distancia: similitud coseno
+
+Utilizamos similitud coseno para comparar todos los ~~vectores~~ textos entre sí
+
+La similitud coseno se mueve entre -1 y 1
+
+$cos(\theta) = \frac{A \cdot B}{||A|| ||B||} = \frac{\sum_{i=1}^{n}A_i B_i}{\sqrt{\sum_{i=1}^nA_i^2 \cdot \sum_{i=1}^nB_i^2 }   }$
+
+
+## Representación geométrica
+
+![](imagenes/cosine.jpg){fig-align="center" width="800px"}
+
+
+## Otras medidas de distancia
+
+- Euclidiana
+- Manhattan
+- Minkowski
+- Hamming
+- Chebychev
+- Mahalanobis
+
+## Ejemplo similitud coseno
+
+```{r}
+vec1 <- c(1, 3, 5, 9)
+vec2 <- c(1, 0.1, 4, 6.9)
+
+library(lsa)
+cosine(vec1, vec2)
+
+set.seed(1234)
+vec1_runif <- runif(100)
+vec2_rnorm <- rnorm(100)
+cosine(vec1_runif, vec2_rnorm)
+
+```
+
+## Similitud coseno "a mano"
+
+Para comprobar, podemos crear nuestra propia función
+
+```{r}
+get_cosine <- function(vec1, vec2) {
+    return( sum(vec1*vec2) / sqrt(sum(vec1^2)*sum(vec2^2)) )
+}  
+
+get_cosine(vec1_runif, vec2_rnorm)
+```
+
+. . .
+
+Es recomendable usar paquetes especializados con buenas implementaciones
+
+
+## Similitud coseno noticias
+
+`textstat_simil` calcula similitud coseno
+
+```{r, eval=TRUE}
+distancia <- textstat_simil(tfidf, method = "cosine")
+dim(distancia)
+```
+
+```{r}
+distancia[1:5, 1:5]
+```
+
+## Recuperando información
+
+Buscamos los 3 más cercanos a la fila 3 (texto original)  
+
+```{r}
+sort(distancia[3, ], decreasing = T)[2:4]
+```
+
+
+```{r}
+most_similar <- corpus[627]
+similar_df <- data.frame(texto = most_similar)
+
+```
+
+
+```{r, echo=FALSE}
+similar_df %>% 
+  kbl()
+```
+
+
+## Miremos el segundo
+
+```{r}
+second <- corpus[8264]
+similar_df <- data.frame(texto = second)
+```
+
+
+```{r, echo=FALSE}
+similar_df %>% 
+  kbl()
+```
+
+## Ejercicio propuesto
+
+Utiliza un set de datos de texto y conviértelo a una matriz tfidf, implementando los pasos vistos durante esta clase.
+
+Dependiendo del formato de descarga, es posible que tengas que utilizar herramientas de la clase anterior
+
+Usa de preferencia los datos de texto de tu trabajo de web scraping
+
+
 
 
 
