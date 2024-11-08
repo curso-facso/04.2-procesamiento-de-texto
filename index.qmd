@@ -331,7 +331,7 @@ dfm_ejemplo2
 
 ## Ejercicio: El Hombre Imaginario
 
-Construiremos a mano una matriz DFM. Para ello, considera los siguientes textos
+Construiremos a mano una matriz DFM. Para ello, considera que cada verso es un documento
 
 
 ```{r, echo=FALSE}
@@ -376,7 +376,7 @@ dfm <- corpus %>%
 ```
 . . .
 
-Tenemos más de 100.000 columnas
+¡Tenemos más de 100.000 columnas!
 
 ```{r}
 dim(dfm)
