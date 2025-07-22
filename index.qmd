@@ -22,9 +22,7 @@ execute:
 
 ## Aplicaciones
 
-<img src="imagenes/ejemplos_nlp.png" width="800" />
-
-
+<img src="imagenes/ejemplos_nlp.png" width="800"/>
 
 ## Relevancia
 
@@ -40,14 +38,13 @@ Necesitamos herramientas automáticas
 
 . . .
 
-
 ::: columns
 ::: {.column width="50%"}
-<img src="imagenes/logo_twitter.jpg" width="300" />
+<img src="imagenes/logo_twitter.jpg" width="300"/>
 :::
 
 ::: {.column width="50%"}
-<img src="imagenes/logo_wiki.png" width="200" />
+<img src="imagenes/logo_wiki.png" width="200"/>
 :::
 :::
 
@@ -55,9 +52,9 @@ Necesitamos herramientas automáticas
 
 El lenguaje:
 
-- Es ambiguo
-- Requiere un contexto
-- Es flexible
+-   Es ambiguo
+-   Requiere un contexto
+-   Es flexible
 
 . . .
 
@@ -70,9 +67,6 @@ if (animal == "perro") {
 ```
 
 **Si el animal es un perro, imprime un ladrido**
-
-
-
 
 ## Introducción a quanteda
 
@@ -133,7 +127,6 @@ data <- read_csv("data/data_larazon_publico_v2.csv")
 ## Flujo básico
 
 ::: panel-tabset
-
 ## crear corpus
 
 Creamos un corpus a partir de una muestra del 20%
@@ -172,15 +165,14 @@ length(corp)
 ## Crear tokens
 
 ::: panel-tabset
-
 ## tokenizar
+
 ```{r}
 toks <-  corp %>% 
   tokens()
 ```
 
 ::: fragment
-
 Es una especie de lista de listas
 
 ```{r}
@@ -188,14 +180,12 @@ toks
 ```
 :::
 
-
 ## explorar
 
 ```{r}
 toks[[1]]
 toks[[1]][3]
 ```
-
 
 ## Todo junto
 
@@ -208,15 +198,11 @@ toks <- data %>%
   corpus() %>% 
   tokens()
 ```
-
-
-
 :::
-
 
 ## Exploremos el dataset
 
-Con `kwic` (*keyword in context*) podemos explorar tópicos 
+Con `kwic` (*keyword in context*) podemos explorar tópicos
 
 ```{r}
 comentarios_eta <- toks %>% 
@@ -269,11 +255,10 @@ comentarios_migracion %>%
 
 A partir del dataset de noticias, realiza las siguientes acciones:
 
-- Selecciona una muestra del 30%
-- Convierte el dataset en corpus y luego "tokeniza"
-- Explora el resultado de la "tokenización"
-- Utilizando kwic, intenta capturar textos que contengan alusiones a violencia de género
-
+-   Selecciona una muestra del 30%
+-   Convierte el dataset en corpus y luego "tokeniza"
+-   Explora el resultado de la "tokenización"
+-   Utilizando kwic, intenta capturar textos que contengan alusiones a violencia de género
 
 # De texto a vectores {.center background-color="aquamarine"}
 
@@ -307,15 +292,12 @@ dfm_ejemplo
 dim(dfm_ejemplo)
 ```
 
-
-
 ## Seleccionando tokens
 
 Removeremos lo siguiente:
 
-- signos de puntuación
-- stopwords
-
+-   signos de puntuación
+-   stopwords
 
 ```{r}
 dfm_ejemplo2 <- ejemplo %>% 
@@ -328,11 +310,9 @@ dfm_ejemplo2
 
 ```
 
-
 ## Ejercicio: El Hombre Imaginario
 
 Construiremos a mano una matriz DFM. Para ello, considera que cada verso es un documento
-
 
 ```{r, echo=FALSE}
 library(kableExtra)
@@ -350,11 +330,9 @@ tibble(`El hombre imaginario` = textos) %>%
 
 Abre un archivo excel y sigue los siguientes pasos:
 
-1. Haz un listado de todas las palabras únicas (OPCIONAL: elimina *stopwords*)
-2. Construye una tabla en la que cada columna tenga el nombre de una palabra única
-3. Cuenta la cantidad de veces que aparece cada palabra en un texto
-
-
+1.  Haz un listado de todas las palabras únicas (OPCIONAL: elimina *stopwords*)
+2.  Construye una tabla en la que cada columna tenga el nombre de una palabra única
+3.  Cuenta la cantidad de veces que aparece cada palabra en un texto
 
 ## Volvamos a las noticias
 
@@ -374,6 +352,7 @@ dfm <- corpus %>%
 
 
 ```
+
 . . .
 
 ¡Tenemos más de 100.000 columnas!
@@ -386,11 +365,11 @@ dim(dfm)
 
 Reduzcamos un poco el número de *tokens* para facilitar el procesamiento
 
-- signos de puntuación
-- símbolos extraños
-- palabras poco significativas (*stopwords*)
-- palabras con menos de 3 caracteres
-- palabras que aparecen menos de 10 veces
+-   signos de puntuación
+-   símbolos extraños
+-   palabras poco significativas (*stopwords*)
+-   palabras con menos de 3 caracteres
+-   palabras que aparecen menos de 10 veces
 
 . . .
 
@@ -445,8 +424,6 @@ dfm2 %>%
   quanteda::topfeatures(n = 10, decreasing = F)
 ```
 
-
-
 # Recuperación de información {.center background-color="aquamarine"}
 
 ## Recuperación de información
@@ -455,12 +432,11 @@ Del inglés *information retrieval*
 
 . . .
 
-Búsquedas de similitud 
+Búsquedas de similitud
 
 . . .
 
 Queremos todos los textos que se parezcan a...
-
 
 . . .
 
@@ -477,6 +453,7 @@ mostrar_texto %>%
   kbl()
 
 ```
+
 # ¿Cómo comparo los textos?
 
 ## ¿Qué necesito?
@@ -485,7 +462,7 @@ Convertir los textos en vectores
 
 . . .
 
-Utilizar alguna medida de distancia 
+Utilizar alguna medida de distancia
 
 . . .
 
@@ -493,8 +470,7 @@ Utilizar alguna medida de distancia
 
 . . .
 
-Sí, pero usaremos algo que funciona mejor 
-
+Sí, pero usaremos algo que funciona mejor
 
 ## TF-IDF
 
@@ -502,12 +478,12 @@ TF-IDF permite enriquecer la descripción de los textos
 
 Un *token* (palabra) es importante cuando:
 
-- Aparece muchas veces en un texto
-- Se repite poco a través de los documentos 
+-   Aparece muchas veces en un texto
+-   Se repite poco a través de los documentos
 
 . . .
 
-*Term frequency* 
+*Term frequency*
 
 *Inverse document frequency*
 
@@ -521,7 +497,7 @@ $conteo = f_{ij}$
 
 $proporción = \frac{f_{ij}}{\sum_jf_{ij}}$
 
-$logcount = 1 + log_{10}(f_{ij})\; si \; f_{ij} > 0$  
+$logcount = 1 + log_{10}(f_{ij})\; si \; f_{ij} > 0$
 
 . . .
 
@@ -530,7 +506,6 @@ $logcount = 1 + log_{10}(f_{ij})\; si \; f_{ij} > 0$
 ## Ejemplos tf
 
 Matriz original
-
 
 ```{r, echo=FALSE}
 dfm_ejemplo
@@ -545,6 +520,7 @@ dfm_ejemplo %>%
   dfm_weight(scheme = "prop") %>% 
   round(3)
 ```
+
 . . .
 
 Matriz logcount
@@ -558,9 +534,9 @@ dfm_ejemplo %>%
 
 $idf = log10(1 + \frac{N}{df_j})$
 
-$N$ = Número total de documentos 
+$N$ = Número total de documentos
 
-$df_j$ = Número de documentos que contienen el término $j$ 
+$df_j$ = Número de documentos que contienen el término $j$
 
 **Nota**: El valor 1 puede ser reemplazado por otra constante
 
@@ -576,7 +552,6 @@ dfm_ejemplo %>%
 
 
 ```
-
 
 ## Todo junto: tfidf
 
@@ -599,21 +574,19 @@ Construye una matriz tfidf ayudándote con un archivo excel. Para el término $t
 
 Sigue los siguientes pasos:
 
-- Identifica las palabras únicas
-- Construye una matriz dfm (frecuencias simples de palabras en cada texto)
-- Calcula el valor de idf para cada término 
-- Multiplica tf * idf
+-   Identifica las palabras únicas
+-   Construye una matriz dfm (frecuencias simples de palabras en cada texto)
+-   Calcula el valor de idf para cada término
+-   Multiplica tf \* idf
 
-
-1. El pan alcanza para todos
-2. menos para la inmensa humanidad
-3. y lo mismo el arroz
-4. y lo mismo el azúcar
-5. y lo mismo las telas
-6. y lo mismo los libros
-7. alcanza para todos menos para
-8. la inmensa humanidad.
-
+1.  El pan alcanza para todos
+2.  menos para la inmensa humanidad
+3.  y lo mismo el arroz
+4.  y lo mismo el azúcar
+5.  y lo mismo las telas
+6.  y lo mismo los libros
+7.  alcanza para todos menos para
+8.  la inmensa humanidad.
 
 ## Apliquemos lo aprendido
 
@@ -654,20 +627,18 @@ La similitud coseno se mueve entre -1 y 1
 
 $cos(\theta) = \frac{A \cdot B}{||A|| ||B||} = \frac{\sum_{i=1}^{n}A_i B_i}{\sqrt{\sum_{i=1}^nA_i^2 \cdot \sum_{i=1}^nB_i^2 }   }$
 
-
 ## Representación geométrica
 
 ![](imagenes/cosine.jpg){fig-align="center" width="800px"}
 
-
 ## Otras medidas de distancia
 
-- Euclidiana
-- Manhattan
-- Minkowski
-- Hamming
-- Chebychev
-- Mahalanobis
+-   Euclidiana
+-   Manhattan
+-   Minkowski
+-   Hamming
+-   Chebychev
+-   Mahalanobis
 
 ## Ejemplo similitud coseno
 
@@ -701,7 +672,6 @@ get_cosine(vec1_runif, vec2_rnorm)
 
 Es recomendable usar paquetes especializados con buenas implementaciones
 
-
 ## Similitud coseno noticias
 
 `textstat_simil` calcula similitud coseno
@@ -717,12 +687,11 @@ distancia[1:5, 1:5]
 
 ## Recuperando información
 
-Buscamos los 3 más cercanos a la fila 3 (texto original)  
+Buscamos los 3 más cercanos a la fila 3 (texto original)
 
 ```{r}
 sort(distancia[3, ], decreasing = T)[2:4]
 ```
-
 
 ```{r}
 most_similar <- corpus[627]
@@ -730,12 +699,10 @@ similar_df <- data.frame(texto = most_similar)
 
 ```
 
-
 ```{r, echo=FALSE}
 similar_df %>% 
   kbl()
 ```
-
 
 ## Miremos el segundo
 
@@ -744,7 +711,6 @@ second <- corpus[8264]
 similar_df <- data.frame(texto = second)
 ```
 
-
 ```{r, echo=FALSE}
 similar_df %>% 
   kbl()
@@ -752,15 +718,36 @@ similar_df %>%
 
 ## Ejercicio propuesto
 
-Utiliza un set de datos de texto y conviértelo a una matriz tfidf, implementando los pasos vistos durante esta clase.
+::: panel-tabset
 
-Dependiendo del formato de descarga, es posible que tengas que utilizar herramientas de la clase anterior
+## datamedios
 
-Usa de preferencia los datos de texto de tu trabajo de web scraping
+Desde la próxima clase comenzaremos a usar un [dataset](https://1drv.ms/f/c/3ba457a6b989f5e0/EuaXjqBokM9Hgxj3jGVz1yMBVxSBytydRP548AxwN2sl7g?e=SZAEDh) de noticias de medios chilenos de prensa
+
+![](imagenes/socialtec.png){fig-align="center"}
 
 
+## tarea
 
+1. Utiliza la columna **contenido_limpio** y explora algunos conceptos que te interesen en el dataset con la función kwic
 
+2. Crea una matriz tfidf, implementando los pasos vistos durante esta clase.
 
+3. Busca una noticia que te parezca interesante e intenta encontrar las 5 más parecidas, utilizando las herramientas revisadas en la clase
+
+## IMPORTANTE
+
+-   El formato del archivo es parquet. Debes usar el paquete arrow
+
+```{r, eval = FALSE}
+library(arrow)
+
+data <- read_parquet("data/noticias_respaldo_2025-05-31.parquet")
+
+```
+
+-   Debido al tamaño, recomiendo utilizar una muestra del 1% antes de construir la matriz
+
+:::
 
 # Métodos computacionales para las ciencias sociales {.center background-color="aquamarine"}

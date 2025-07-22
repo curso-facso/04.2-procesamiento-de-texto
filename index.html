@@ -1605,11 +1605,41 @@ text5 0.007121486 0.004827518 0.008640022 0.02928580 1.000000000</code></pre>
 </div>
 </div>
 </section>
-<section id="ejercicio-propuesto" class="slide level2">
+<section id="ejercicio-propuesto" class="slide level2 scrollable">
 <h2>Ejercicio propuesto</h2>
-<p>Utiliza un set de datos de texto y conviértelo a una matriz tfidf, implementando los pasos vistos durante esta clase.</p>
-<p>Dependiendo del formato de descarga, es posible que tengas que utilizar herramientas de la clase anterior</p>
-<p>Usa de preferencia los datos de texto de tu trabajo de web scraping</p>
+<div class="panel-tabset">
+<ul id="tabset-3" class="panel-tabset-tabby"><li><a data-tabby-default="" href="#tabset-3-1">datamedios</a></li><li><a href="#tabset-3-2">tarea</a></li><li><a href="#tabset-3-3">IMPORTANTE</a></li></ul>
+<div class="tab-content">
+<div id="tabset-3-1">
+<p>Desde la próxima clase comenzaremos a usar un <a href="https://1drv.ms/f/c/3ba457a6b989f5e0/EuaXjqBokM9Hgxj3jGVz1yMBVxSBytydRP548AxwN2sl7g?e=SZAEDh">dataset</a> de noticias de medios chilenos de prensa</p>
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="imagenes/socialtec.png" class="quarto-figure quarto-figure-center"></p>
+</figure>
+</div>
+</div>
+<div id="tabset-3-2">
+<ol type="1">
+<li><p>Utiliza la columna <strong>contenido_limpio</strong> y explora algunos conceptos que te interesen en el dataset con la función kwic</p></li>
+<li><p>Crea una matriz tfidf, implementando los pasos vistos durante esta clase.</p></li>
+<li><p>Busca una noticia que te parezca interesante e intenta encontrar las 5 más parecidas, utilizando las herramientas revisadas en la clase</p></li>
+</ol>
+</div>
+<div id="tabset-3-3">
+<ul>
+<li>El formato del archivo es parquet. Debes usar el paquete arrow</li>
+</ul>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb65"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb65-1"><a href=""></a><span class="fu">library</span>(arrow)</span>
+<span id="cb65-2"><a href=""></a></span>
+<span id="cb65-3"><a href=""></a>data <span class="ot">&lt;-</span> <span class="fu">read_parquet</span>(<span class="st">"data/noticias_respaldo_2025-05-31.parquet"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<ul>
+<li>Debido al tamaño, recomiendo utilizar una muestra del 1% antes de construir la matriz</li>
+</ul>
+</div>
+</div>
+</div>
 </section></section>
 <section id="métodos-computacionales-para-las-ciencias-sociales" class="title-slide slide level1 center" data-background-color="aquamarine">
 <h1>Métodos computacionales para las ciencias sociales</h1>
