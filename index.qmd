@@ -113,7 +113,7 @@ library(quanteda.textplots)
 
 Conjunto de noticias obtenidas de los diarios La Razón y Público de España
 
-Dataset obtenido de kaggle
+Dataset obtenido de kaggle que puedes descargar [acá](https://1drv.ms/u/c/3ba457a6b989f5e0/EWI1LiXfz6hPi6dtiW9ZEe8By2x1nizOr4aWF5s7TlUJNQ?e=SaUHmw)
 
 . . .
 
